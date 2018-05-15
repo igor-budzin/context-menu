@@ -16,7 +16,10 @@
 		else this.menuParams = defaults;
 
 		buildMenu.call(this);
-		document.addEventListener('contextmenu', contextMenu.prototype.open.bind(this));
+
+		Array.prototype.map.call(document.querySelectorAll(this.menuParams.target), function(item) {
+			item.addEventListener('contextmenu', contextMenu.prototype.open.bind(this));
+		}.bind(this));
 		document.addEventListener('click', clickOutMenu.bind(this));
 	}
 
@@ -91,5 +94,6 @@ var menuItems = [
 ]
 
 var menu = new contextMenu({
+	target: '.action-btn',
 	items: menuItems
 });
