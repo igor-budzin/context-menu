@@ -1,0 +1,44 @@
+.context-menu {
+	position: absolute;
+	display: none;
+    border: 1px solid #c3c3c3;
+    background-color: #FFF;
+    z-index: 9999;
+	box-shadow: 1px 1px 4px 1px rgba(62, 62, 62, 0.22);
+}
+.context-menu.opened {
+	display: block;
+}
+.context-menu:before,
+.context-menu:after {
+	content: " ";
+	display: block;
+	height: 0
+}
+.context-menu:after{
+	clear: both
+}
+.context-menu{
+	*zoom: 1
+}
+.context-menu .list {
+	list-style: none;
+	clear: both;
+	margin: 5px 0;
+	padding: 0;
+	min-width: 150px;
+}
+.context-menu .list li {
+	padding: 0 20px;
+	height: 30px;
+	line-height: 30px;
+	white-space: nowrap;
+	clear: both;
+	cursor: pointer;
+	color: #7d7d7d;
+	font-family: 'Open Sans', Tahoma, sans-serif;
+}
+.context-menu .list li:hover {
+	background-color: #B3B3B3;
+    color: #FFF;
+}
