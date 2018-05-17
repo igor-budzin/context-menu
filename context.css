@@ -55,7 +55,7 @@
 	position: static;
 }
 .context-menu .list li:hover .sublist {
-	display: block;
+	visibility: visible;
 }
 .context-menu .list li.sub:after {
 	display: block;
@@ -74,7 +74,8 @@
 	_filter: progid:DXImageTransform.Microsoft.Chroma(color='#ffffff');
 }
 .context-menu .sublist {
-	display: none;
+	display: block;
+	visibility: hidden;
 	overflow: visible;
 	margin: 0;
 	position: absolute;

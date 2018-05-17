@@ -18,7 +18,7 @@
 		}
 		else this.menuParams = defaults;
 
-		buildMenu.call(this);
+		buildMenu.call(this); // Формує html і вішає евенти на пункти
 
 		this.list = document.querySelector('#context-menu .list');
 
@@ -44,13 +44,16 @@
 		event = event || window.event;
 		event.preventDefault();
 
+		this.container.classList.add('opened');
+
 		var position = menuPosition.call(this, event);
 
 		this.container.style.top = position.top + 'px';
 		this.container.style.left = position.left + 'px';
-
-		this.container.classList.add('opened');
 		this.list.scrollTop = 0;
+
+		submenuPosition.call(this, event);
+
 		document.querySelector('#context-menu #top-arrow').classList.remove('visible');
 	}
 
@@ -159,6 +162,40 @@
 		contextMenu.prototype.close.call(this, event);
 	}
 
+	function submenuPosition(event) {
+		var _this = this;
+		var windowWidth = document.documentElement.clientWidth;
+		var windowHeight = document.documentElement.clientHeight;
+
+		Array.prototype.map.call(document.getElementsByClassName('sub'), function(item) {
+			var sublistWidth = item.getElementsByClassName('sublist')[0].offsetWidth;
+			var sublistHeight = item.getElementsByClassName('sublist')[0].offsetHeight;
+
+			if(windowWidth < (sublistWidth + item.offsetWidth + event.clientX)) {
+				item.getElementsByClassName('sublist')[0].style.left = -(sublistWidth) + 'px';
+			}
+			else {
+				item.getElementsByClassName('sublist')[0].style.left = '100%';
+			}
+
+			if(windowHeight > (sublistHeight + item.offsetHeight + event.clientY)) {
+				item.getElementsByClassName('sublist')[0].style.top = item.getBoundingClientRect().top - _this.container.getBoundingClientRect().top + 'px';
+			}
+			else {
+				item.getElementsByClassName('sublist')[0].style.top =
+				item.getBoundingClientRect().top - _this.container.getBoundingClientRect().top - sublistHeight + _this.itemHeight + 'px';
+			}
+
+		});
+	}
+
+	function submenuReposition() {
+		var _this = this;
+		Array.prototype.map.call(document.getElementsByClassName('sub'), function(item) {
+			item.getElementsByClassName('sublist')[0].style.top = item.getBoundingClientRect().top - _this.container.getBoundingClientRect().top + 'px';
+		});
+	}
+
 	function menuPosition(event) {
 		var left, top;
 		var windowWidth = document.documentElement.clientWidth;
@@ -202,7 +239,7 @@
 		else {
 			document.getElementById('top-arrow').classList.add('visible');
 		}
-
+		submenuReposition.call(this);
 	}
 
 	function extendDefaults(source, properties) {
@@ -218,10 +255,16 @@
 
 var subItems = [
 	{title: 'Квартири'},
-	{title: 'Кімнати'},
-	{title: 'Гаражі'},
+	{title: 'Кімнати (callback)', callback: function() {alert('ok')}},
+	{title: 'Гаражі (disabled)', disabled: true},
 	{title: 'Ділянки'},
 	{title: 'Оренда'},
+	{title: 'Ділянки'},
+	{title: 'Оренда'},
+	{title: 'Ділянки'},
+	{title: 'Оренда'},
+	{title: 'Ділянки'},
+	{title: 'Оренда'}
 ];
 
 var menuItems = [
