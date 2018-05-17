@@ -67,10 +67,10 @@
 		var li;
 
 		list.classList.add('list');
-		list.style.maxHeight = (30 * this.visibleItems) + 'px'; // 30 - height item in CSS
-		this.container.style.maxHeight = (30 * this.visibleItems) + 20 + 'px'; // 30 - height item in CSS
+		list.style.maxHeight = (this.itemHeight * this.visibleItems) + 'px';
+		this.container.style.maxHeight = (this.itemHeight * this.visibleItems) + 20 + 'px'; // 20 - CSS offset (10 - top, 10 - bottom)
 
-		this.menuParams.items.map(function(item) {
+		this.menuParams.items.map(function(item, i) {
 			li = document.createElement('li');
 			li.innerHTML = item.title;
 			if(item.disabled) {
@@ -78,15 +78,48 @@
 			}
 			else {
 				li.classList.add('enabled');
-				if(item.callback && typeof item.callback === 'function') {
-					li.onclick = function(event) {
-						item.callback();
-						contextMenu.prototype.close.call(_this, event);
-					};
+				if(item.subitems) {
+					li.classList.add('sub');
+					var subli;
+					var	sublist = document.createElement('ul');
+					sublist.style.top = (i * _this.itemHeight) + 10 + 'px'; // 10 - CSS offset container
+					sublist.classList.add('sublist');
+					item.subitems.map(function(subitem) {
+						subli = document.createElement('li');
+						subli.innerHTML = subitem.title;
+						if(subitem.disabled) {
+							subli.classList.add('disabled');
+						}
+						else {
+							subli.classList.add('enabled');
+							if(subitem.callback && typeof subitem.callback === 'function') {
+								subli.onclick = function(event) {
+									subitem.callback();
+									contextMenu.prototype.close.call(_this, event);
+								};
+							}
+							else {
+								subli.onclick = function(event) {
+									contextMenu.prototype.close.call(_this, event);
+								}
+							}
+						}
+						sublist.appendChild(subli);
+					});
+
+					li.appendChild(sublist);
 				}
 				else {
-					li.onclick = function(event) {
-						contextMenu.prototype.close.call(_this, event);
+					if(item.callback && typeof item.callback === 'function') {
+						li.onclick = function(event) {
+							item.callback();
+							contextMenu.prototype.close.call(_this, event);
+						};
+					}
+					else {
+						li.onclick = function(event) {
+							contextMenu.prototype.close.call(_this, event);
+						}
 					}
 				}
 			}
@@ -115,11 +148,10 @@
 
 	function clickOutMenu(event) {
 		event = event || window.event;
-		var menuElement = document.getElementById('context-menu');
 		var targetElement = event.target;
 
 		do {
-			if (targetElement == menuElement) return;
+			if (targetElement == this.container) return;
 			targetElement = targetElement.parentNode;
 		}
 		while(targetElement);
@@ -156,7 +188,6 @@
 		this.list.scrollTop = this.list.scrollTop - this.itemHeight;
 	}
 
-
 	function scrollHandle() {
 		var maxScrollTop = this.list.scrollHeight - this.list.clientHeight;
 		if(this.list.scrollTop === maxScrollTop) {
@@ -185,12 +216,20 @@
 	}
 }());
 
+var subItems = [
+	{title: 'Квартири'},
+	{title: 'Кімнати'},
+	{title: 'Гаражі'},
+	{title: 'Ділянки'},
+	{title: 'Оренда'},
+];
+
 var menuItems = [
 	{title: 'Всі розділи'},
-	{title: 'Нерухомiсть (callback)', callback: function() {alert('ok')}},
-	{title: 'Будiвництво та ремонт'},
+	{title: 'Нерухомiсть', subitems: subItems},
+	{title: 'Будiвництво (callback)', callback: function() {alert('ok')}},
 	{title: 'Транспорт (disabled)', disabled: true},
-	{title: 'Запчастини та СТО'},
+	{title: 'Запчастини та СТО', subitems: subItems},
 	{title: 'Робота та навчання'},
 	{title: 'Меблі та освітлення'},
 	{title: 'Техніка комп\'ютерна'},

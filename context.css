@@ -29,7 +29,8 @@
 .context-menu{
 	*zoom: 1
 }
-.context-menu .list {
+.context-menu .list,
+.context-menu .sublist {
 	list-style: none;
 	clear: both;
 	margin: 10px 0;
@@ -38,9 +39,10 @@
 	overflow-y: scroll;
 	-ms-overflow-style: none;
 	overflow: -moz-scrollbars-none;
-
 }
-.context-menu .list::-webkit-scrollbar { width: 0 !important; }
+.context-menu .list::-webkit-scrollbar {
+	width: 0 !important;
+}
 .context-menu .list li {
 	padding: 0 20px;
 	height: 30px;
@@ -50,6 +52,37 @@
 	cursor: pointer;
 	color: #7d7d7d;
 	font-family: 'Open Sans', Tahoma, sans-serif;
+	position: static;
+}
+.context-menu .list li:hover .sublist {
+	display: block;
+}
+.context-menu .list li.sub:after {
+	display: block;
+	content: "";
+	width: 0;
+	height: 0;
+	right: 0;
+	position: relative;
+	top: -20px;
+	left: 101%;
+	border-style: solid;
+	border-width: 5px 0 5px 5px;
+	border-color: transparent transparent transparent #000000;
+	line-height: 0px;
+	_border-color: #ffffff #ffffff #ffffff #000000;
+	_filter: progid:DXImageTransform.Microsoft.Chroma(color='#ffffff');
+}
+.context-menu .sublist {
+	display: none;
+	overflow: visible;
+	margin: 0;
+	position: absolute;
+	left: 100%;
+	background-color: #fff;
+	border: 1px solid #c3c3c3;
+    z-index: 9999;
+	box-shadow: 1px 1px 4px 1px rgba(62, 62, 62, 0.22);
 }
 .context-menu .list li.disabled {
 	text-decoration: line-through;
@@ -104,7 +137,6 @@
 .context-menu .arrow.visible {
 	display: block;
 }
-
 .context-menu .arrow.top-arrow:before {
 	border-width: 0 5px 5px 5px;
 	border-color: transparent transparent #000000 transparent;
@@ -114,5 +146,4 @@
 	border-width: 5px 5px 0 5px;
 	border-color: #000000 transparent transparent transparent;
 	_border-color: #000000 #ffffff #ffffff #ffffff;
-
 }
