@@ -2,12 +2,20 @@
 	position: absolute;
 	display: none;
     border: 1px solid #c3c3c3;
-    background-color: #FFF;
+    background-color: #fff;
     z-index: 9999;
 	box-shadow: 1px 1px 4px 1px rgba(62, 62, 62, 0.22);
 }
 .context-menu.opened {
 	display: block;
+}
+.context-menu * {
+	-webkit-touch-callout: none; /* iOS Safari */
+	  -webkit-user-select: none; /* Safari */
+	   -khtml-user-select: none; /* Konqueror HTML */
+		 -moz-user-select: none; /* Firefox */
+		  -ms-user-select: none; /* Internet Explorer/Edge */
+			  user-select: none;
 }
 .context-menu:before,
 .context-menu:after {
@@ -24,10 +32,15 @@
 .context-menu .list {
 	list-style: none;
 	clear: both;
-	margin: 5px 0;
+	margin: 10px 0;
 	padding: 0;
 	min-width: 150px;
+	overflow-y: scroll;
+	-ms-overflow-style: none;
+	overflow: -moz-scrollbars-none;
+
 }
+.context-menu .list::-webkit-scrollbar { width: 0 !important; }
 .context-menu .list li {
 	padding: 0 20px;
 	height: 30px;
@@ -38,7 +51,68 @@
 	color: #7d7d7d;
 	font-family: 'Open Sans', Tahoma, sans-serif;
 }
-.context-menu .list li:hover {
+.context-menu .list li.disabled {
+	text-decoration: line-through;
+	cursor: default;
+}
+.context-menu .list li.enabled:hover {
 	background-color: #B3B3B3;
     color: #FFF;
+}
+.context-menu .arrow {
+	position: absolute;
+	background-color: #ececec;
+	height: 10px;
+	width: 100%;
+	display: none;
+}
+.context-menu .arrow.top-arrow {
+	top: 0;
+}
+.context-menu .arrow.bottom-arrow {
+	bottom: 0;
+}
+.context-menu .arrow.top-arrow:before,
+.context-menu .arrow.bottom-arrow:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 0;
+	height: 0;
+	transform: translateX(-50%) translateY(-50%);
+	border-style: solid;
+	line-height: 0px;
+	_filter: progid:DXImageTransform.Microsoft.Chroma(color='#ffffff');
+}
+.context-menu .arrow.top-arrow:before,
+.context-menu .arrow.bottom-arrow:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 0;
+	height: 0;
+	transform: translateX(-50%) translateY(-50%);
+	border-style: solid;
+	line-height: 0px;
+	_filter: progid:DXImageTransform.Microsoft.Chroma(color='#ffffff');
+}
+.context-menu .arrow.visible,
+.context-menu .arrow.visible {
+	display: block;
+}
+
+.context-menu .arrow.top-arrow:before {
+	border-width: 0 5px 5px 5px;
+	border-color: transparent transparent #000000 transparent;
+	_border-color: #ffffff #ffffff #000000 #ffffff;
+}
+.context-menu .arrow.bottom-arrow:before {
+	border-width: 5px 5px 0 5px;
+	border-color: #000000 transparent transparent transparent;
+	_border-color: #000000 #ffffff #ffffff #ffffff;
+
 }
